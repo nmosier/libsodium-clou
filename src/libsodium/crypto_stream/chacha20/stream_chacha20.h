@@ -11,11 +11,11 @@ typedef struct crypto_stream_chacha20_implementation {
                            const unsigned char *n, const unsigned char *k);
     int (*stream_xor_ic)(unsigned char *c, const unsigned char *m,
                          unsigned long long mlen,
-                         const unsigned char *n, uint64_t ic,
+                         const unsigned char *n, clou_secret_param(uint64_t, ic),
                          const unsigned char *k);
     int (*stream_ietf_ext_xor_ic)(unsigned char *c, const unsigned char *m,
                                   unsigned long long mlen,
-                                  const unsigned char *n, uint32_t ic,
+                                  const unsigned char *n, clou_secret_param(uint32_t, ic),
                                   const unsigned char *k);
 } crypto_stream_chacha20_implementation;
 

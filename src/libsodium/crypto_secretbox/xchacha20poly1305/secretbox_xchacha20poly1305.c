@@ -59,8 +59,9 @@ crypto_secretbox_xchacha20poly1305_detached(unsigned char *c,
     }
     sodium_memzero(block0, sizeof block0);
     if (mlen > mlen0) {
+        const uint64_t u64_1 = 1U;
         crypto_stream_chacha20_xor_ic(c + mlen0, m + mlen0, mlen - mlen0,
-                                      n + 16, 1U, subkey);
+                                      n + 16, &u64_1, subkey);
     }
     sodium_memzero(subkey, sizeof subkey);
 
@@ -129,8 +130,9 @@ crypto_secretbox_xchacha20poly1305_open_detached(unsigned char *m,
         m[i] = block0[i + crypto_secretbox_xchacha20poly1305_ZEROBYTES];
     }
     if (clen > mlen0) {
+        const uint64_t u64_1 = 1U;
         crypto_stream_chacha20_xor_ic(m + mlen0, c + mlen0, clen - mlen0,
-                                      n + 16, 1U, subkey);
+                                      n + 16, &u64_1, subkey);
     }
     sodium_memzero(subkey, sizeof subkey);
 

@@ -43,7 +43,8 @@ _encrypt_detached(unsigned char *c,
     crypto_onetimeauth_poly1305_update(&state, ad, adlen);
     crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - adlen) & 0xf);
 
-    crypto_stream_chacha20_ietf_ext_xor_ic(c, m, mlen, npub, 1U, k);
+    const uint32_t u32_1 = 1U;
+    crypto_stream_chacha20_ietf_ext_xor_ic(c, m, mlen, npub, &u32_1, k);
 
     crypto_onetimeauth_poly1305_update(&state, c, mlen);
     crypto_onetimeauth_poly1305_update(&state, _pad0, (0x10 - mlen) & 0xf);
@@ -112,7 +113,8 @@ _decrypt_detached(unsigned char *m,
         memset(m, 0, mlen);
         return -1;
     }
-    crypto_stream_chacha20_ietf_ext_xor_ic(m, c, mlen, npub, 1U, k);
+    const uint32_t u32_1 = 1U;
+    crypto_stream_chacha20_ietf_ext_xor_ic(m, c, mlen, npub, &u32_1, k);
 
     return 0;
 }

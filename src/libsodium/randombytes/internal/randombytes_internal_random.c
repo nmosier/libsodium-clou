@@ -554,8 +554,9 @@ randombytes_internal_random_xorkey(const unsigned char * const mix)
  */
 
 static void
-randombytes_internal_random_buf(void * const buf, const size_t size)
+randombytes_internal_random_buf(void * const buf, clou_secret_param(size_t, size))
 {
+    clou_declare_local(const size_t, size);
     size_t i;
     int    ret;
 

@@ -145,7 +145,7 @@ randombytes_buf(void * const buf, const size_t size)
 #ifndef __EMSCRIPTEN__
     randombytes_init_if_needed();
     if (size > (size_t) 0U) {
-        implementation->buf(buf, size);
+        implementation->buf(buf, &size);
     }
 #else
     unsigned char *p = (unsigned char *) buf;

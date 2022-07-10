@@ -225,6 +225,7 @@ argon2_finalize(const argon2_context *context, argon2_instance_t *instance)
 void
 argon2_fill_memory_blocks(argon2_instance_t *instance, uint32_t pass)
 {
+    clou_public(pass);
     argon2_position_t position;
     uint32_t l;
     uint32_t s;

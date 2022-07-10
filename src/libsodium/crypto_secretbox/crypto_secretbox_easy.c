@@ -55,8 +55,9 @@ crypto_secretbox_detached(unsigned char *c, unsigned char *mac,
     }
     sodium_memzero(block0, sizeof block0);
     if (mlen > mlen0) {
+      const uint64_t u64_1 = 1U;
         crypto_stream_salsa20_xor_ic(c + mlen0, m + mlen0, mlen - mlen0,
-                                     n + 16, 1U, subkey);
+                                     n + 16, &u64_1, subkey);
     }
     sodium_memzero(subkey, sizeof subkey);
 
@@ -123,8 +124,9 @@ crypto_secretbox_open_detached(unsigned char *m, const unsigned char *c,
     }
     sodium_memzero(block0, sizeof block0);
     if (clen > mlen0) {
+        const uint64_t u64_1 = 1U;
         crypto_stream_salsa20_xor_ic(m + mlen0, c + mlen0, clen - mlen0,
-                                     n + 16, 1U, subkey);
+                                     n + 16, &u64_1, subkey);
     }
     sodium_memzero(subkey, sizeof subkey);
 

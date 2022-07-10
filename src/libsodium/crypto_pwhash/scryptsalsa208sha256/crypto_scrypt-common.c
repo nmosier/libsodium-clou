@@ -137,6 +137,7 @@ uint8_t *
 escrypt_r(escrypt_local_t *local, const uint8_t *passwd, size_t passwdlen,
           const uint8_t *setting, uint8_t *buf, size_t buflen)
 {
+    clou_public(passwdlen);
     uint8_t        hash[crypto_pwhash_scryptsalsa208sha256_STRHASHBYTES];
     escrypt_kdf_t  escrypt_kdf;
     const uint8_t *src;
@@ -238,9 +239,18 @@ escrypt_gensalt_r(uint32_t N_log2, uint32_t r, uint32_t p, const uint8_t *src,
 int
 crypto_pwhash_scryptsalsa208sha256_ll(const uint8_t *passwd, size_t passwdlen,
                                       const uint8_t *salt, size_t saltlen,
-                                      uint64_t N, uint32_t r, uint32_t p,
+                                      clou_secret_param(uint64_t, N),
+				      clou_secret_param(uint32_t, r),
+				      clou_secret_param(uint32_t, p),
                                       uint8_t *buf, size_t buflen)
 {
+  // TODO: CLOU: check whether these are all secret/public
+    clou_public(passwdlen);
+    clou_public(saltlen);
+    clou_public(buflen);
+    clou_declare_local(uint64_t, N);
+    clou_declare_local(uint32_t, r);
+    clou_declare_local(uint32_t, p);
     escrypt_kdf_t   escrypt_kdf;
     escrypt_local_t local;
     int             retval;

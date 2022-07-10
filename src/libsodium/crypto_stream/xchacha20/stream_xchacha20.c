@@ -44,13 +44,14 @@ crypto_stream_xchacha20(unsigned char *c, unsigned long long clen,
 int
 crypto_stream_xchacha20_xor_ic(unsigned char *c, const unsigned char *m,
                                unsigned long long mlen, const unsigned char *n,
-                               uint64_t ic, const unsigned char *k)
+                               clou_secret_param(uint64_t, ic), const unsigned char *k)
 {
+    clou_declare_local(uint64_t, ic);
     unsigned char k2[crypto_core_hchacha20_OUTPUTBYTES];
 
     crypto_core_hchacha20(k2, n, k, NULL);
     return crypto_stream_chacha20_xor_ic(
-        c, m, mlen, n + crypto_core_hchacha20_INPUTBYTES, ic, k2);
+        c, m, mlen, n + crypto_core_hchacha20_INPUTBYTES, &ic, k2);
 }
 
 int
@@ -58,7 +59,8 @@ crypto_stream_xchacha20_xor(unsigned char *c, const unsigned char *m,
                             unsigned long long mlen, const unsigned char *n,
                             const unsigned char *k)
 {
-    return crypto_stream_xchacha20_xor_ic(c, m, mlen, n, 0U, k);
+  const uint64_t u64_0 = 0U;
+    return crypto_stream_xchacha20_xor_ic(c, m, mlen, n, &u64_0, k);
 }
 
 void

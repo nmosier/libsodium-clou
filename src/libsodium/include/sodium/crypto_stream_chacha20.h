@@ -48,7 +48,7 @@ int crypto_stream_chacha20_xor(unsigned char *c, const unsigned char *m,
 SODIUM_EXPORT
 int crypto_stream_chacha20_xor_ic(unsigned char *c, const unsigned char *m,
                                   unsigned long long mlen,
-                                  const unsigned char *n, uint64_t ic,
+                                  const unsigned char *n, clou_secret_param(uint64_t, ic),
                                   const unsigned char *k)
             __attribute__ ((nonnull));
 

@@ -89,6 +89,9 @@ argon2_hash(const uint32_t t_cost, const uint32_t m_cost,
             const size_t hashlen, char *encoded, const size_t encodedlen,
             argon2_type type)
 {
+    clou_public(t_cost);
+    clou_public(m_cost);
+    clou_public(parallelism);
     argon2_context context;
     int            result;
     uint8_t       *out;

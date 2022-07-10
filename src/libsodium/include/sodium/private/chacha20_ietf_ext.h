@@ -10,7 +10,7 @@ int crypto_stream_chacha20_ietf_ext(unsigned char *c, unsigned long long clen,
 
 int crypto_stream_chacha20_ietf_ext_xor_ic(unsigned char *c, const unsigned char *m,
                                            unsigned long long mlen,
-                                           const unsigned char *n, uint32_t ic,
+                                           const unsigned char *n, clou_secret_param(uint32_t, ic),
                                            const unsigned char *k);
 #endif
 

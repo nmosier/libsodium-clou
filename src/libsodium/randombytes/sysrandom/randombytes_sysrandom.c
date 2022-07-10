@@ -98,10 +98,18 @@ randombytes_sysrandom_stir(void)
 }
 
 static void
-randombytes_sysrandom_buf(void * const buf, const size_t size)
+randombytes_sysrandom_buf(void * const buf, clou_secret_param(size_t, size))
 {
+    clou_declare_local(const size_t, size);
     arc4random_buf(buf, size);
 }
+
+#define randombytes_sysrandom_buf(buf, size_)			\
+  do {								\
+    const size_t clou_wrapper_name(size) = (size_);		\
+    (randombytes_sysrandom_buf)(buf, &clou_wrapper_name(size));	\
+  } while (0)
+
 
 static int
 randombytes_sysrandom_close(void)
@@ -336,8 +344,9 @@ randombytes_sysrandom_close(void)
 }
 
 static void
-randombytes_sysrandom_buf(void * const buf, const size_t size)
+randombytes_sysrandom_buf(void * const buf, clou_secret_param(size_t, size))
 {
+    clou_declare_local(const size_t, size);
     randombytes_sysrandom_stir_if_needed();
 # if defined(ULLONG_MAX) && defined(SIZE_MAX)
 #  if SIZE_MAX > ULLONG_MAX
@@ -369,11 +378,17 @@ randombytes_sysrandom_buf(void * const buf, const size_t size)
 # endif /* _WIN32 */
 }
 
+#define randombytes_sysrandom_buf(buf, size_)			\
+  do {								\
+    const size_t clou_wrapper_name(size) = (size_);		\
+    (randombytes_sysrandom_buf)(buf, &clou_wrapper_name(size));	\
+  } while (0)
+
+
 static uint32_t
 randombytes_sysrandom(void)
 {
     uint32_t r;
-
     randombytes_sysrandom_buf(&r, sizeof r);
 
     return r;

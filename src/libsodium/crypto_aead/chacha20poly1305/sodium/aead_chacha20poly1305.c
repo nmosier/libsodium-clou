@@ -22,9 +22,9 @@ crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
                                               unsigned char *mac,
                                               unsigned long long *maclen_p,
                                               const unsigned char *m,
-                                              unsigned long long mlen,
+					      unsigned long long mlen,
                                               const unsigned char *ad,
-                                              unsigned long long adlen,
+					      unsigned long long adlen,
                                               const unsigned char *nsec,
                                               const unsigned char *npub,
                                               const unsigned char *k)
@@ -42,7 +42,8 @@ crypto_aead_chacha20poly1305_encrypt_detached(unsigned char *c,
     STORE64_LE(slen, (uint64_t) adlen);
     crypto_onetimeauth_poly1305_update(&state, slen, sizeof slen);
 
-    crypto_stream_chacha20_xor_ic(c, m, mlen, npub, 1U, k);
+    const uint64_t u64_1 = 1U;
+    crypto_stream_chacha20_xor_ic(c, m, mlen, npub, &u64_1, k);
 
     crypto_onetimeauth_poly1305_update(&state, c, mlen);
     STORE64_LE(slen, (uint64_t) mlen);
@@ -208,7 +209,8 @@ crypto_aead_chacha20poly1305_decrypt_detached(unsigned char *m,
         memset(m, 0, mlen);
         return -1;
     }
-    crypto_stream_chacha20_xor_ic(m, c, mlen, npub, 1U, k);
+    const uint64_t u64_1 = 1U;
+    crypto_stream_chacha20_xor_ic(m, c, mlen, npub, &u64_1, k);
 
     return 0;
 }

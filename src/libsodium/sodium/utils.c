@@ -112,6 +112,7 @@ __attribute__((weak)) void
 _sodium_dummy_symbol_to_prevent_memzero_lto(void *const  pnt,
                                             const size_t len)
 {
+    clou_public(len);
     (void) pnt; /* LCOV_EXCL_LINE */
     (void) len; /* LCOV_EXCL_LINE */
 }
@@ -121,6 +122,7 @@ _sodium_dummy_symbol_to_prevent_memzero_lto(void *const  pnt,
 void
 sodium_memzero(void * const pnt, const size_t len)
 {
+    clou_public(len);
 #ifdef _WIN32
     SecureZeroMemory(pnt, len);
 #elif defined(HAVE_MEMSET_S)
@@ -171,6 +173,7 @@ _sodium_dummy_symbol_to_prevent_memcmp_lto(const unsigned char *b1,
                                            const unsigned char *b2,
                                            const size_t         len)
 {
+    clou_public(len);
     (void) b1;
     (void) b2;
     (void) len;
@@ -211,6 +214,7 @@ _sodium_dummy_symbol_to_prevent_compare_lto(const unsigned char *b1,
                                             const unsigned char *b2,
                                             const size_t         len)
 {
+    clou_public(len);
     (void) b1;
     (void) b2;
     (void) len;
@@ -427,6 +431,7 @@ _sodium_alloc_init(void)
 int
 sodium_mlock(void *const addr, const size_t len)
 {
+    clou_public(len);
 #if defined(MADV_DONTDUMP) && defined(HAVE_MADVISE)
     (void) madvise(addr, len, MADV_DONTDUMP);
 #endif

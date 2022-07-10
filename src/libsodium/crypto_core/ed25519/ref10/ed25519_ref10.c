@@ -603,8 +603,9 @@ ge25519_cmov_cached(ge25519_cached *t, const ge25519_cached *u, unsigned char b)
 }
 
 static void
-ge25519_cmov8(ge25519_precomp *t, const ge25519_precomp precomp[8], const signed char b)
+ge25519_cmov8(ge25519_precomp *t, const ge25519_precomp precomp[8], clou_secret_param(signed char, b))
 {
+    clou_declare_local(const signed char, b);
     ge25519_precomp     minust;
     const unsigned char bnegative = negative(b);
     const unsigned char babs      = b - (((-bnegative) & b) * ((signed char) 1 << 1));
@@ -625,8 +626,9 @@ ge25519_cmov8(ge25519_precomp *t, const ge25519_precomp precomp[8], const signed
 }
 
 static void
-ge25519_cmov8_base(ge25519_precomp *t, const int pos, const signed char b)
+ge25519_cmov8_base(ge25519_precomp *t, const int pos, clou_secret_param(signed char, b))
 {
+    clou_declare_local(const signed char, b);
     static const ge25519_precomp base[32][8] = { /* base[i][j] = (j+1)*256^i*B */
 #ifdef HAVE_TI_MODE
 # include "fe_51/base.h"
@@ -634,12 +636,13 @@ ge25519_cmov8_base(ge25519_precomp *t, const int pos, const signed char b)
 # include "fe_25_5/base.h"
 #endif
     };
-    ge25519_cmov8(t, base[pos], b);
+    ge25519_cmov8(t, base[pos], &b);
 }
 
 static void
-ge25519_cmov8_cached(ge25519_cached *t, const ge25519_cached cached[8], const signed char b)
+ge25519_cmov8_cached(ge25519_cached *t, const ge25519_cached cached[8], clou_secret_param(signed char, b))
 {
+    clou_declare_local(const signed char, b);
     ge25519_cached      minust;
     const unsigned char bnegative = negative(b);
     const unsigned char babs      = b - (((-bnegative) & b) * ((signed char) 1 << 1));
@@ -864,7 +867,7 @@ ge25519_scalarmult(ge25519_p3 *h, const unsigned char *a, const ge25519_p3 *p)
     ge25519_p3_0(h);
 
     for (i = 63; i != 0; i--) {
-        ge25519_cmov8_cached(&t, pi, e[i]);
+        ge25519_cmov8_cached(&t, pi, &e[i]);
         ge25519_add(&r, h, &t);
 
         ge25519_p1p1_to_p2(&s, &r);
@@ -878,7 +881,7 @@ ge25519_scalarmult(ge25519_p3 *h, const unsigned char *a, const ge25519_p3 *p)
 
         ge25519_p1p1_to_p3(h, &r);  /* *16 */
     }
-    ge25519_cmov8_cached(&t, pi, e[i]);
+    ge25519_cmov8_cached(&t, pi, &e[i]);
     ge25519_add(&r, h, &t);
 
     ge25519_p1p1_to_p3(h, &r);
@@ -924,7 +927,7 @@ ge25519_scalarmult_base(ge25519_p3 *h, const unsigned char *a)
     ge25519_p3_0(h);
 
     for (i = 1; i < 64; i += 2) {
-        ge25519_cmov8_base(&t, i / 2, e[i]);
+        ge25519_cmov8_base(&t, i / 2, &e[i]);
         ge25519_madd(&r, h, &t);
         ge25519_p1p1_to_p3(h, &r);
     }
@@ -939,7 +942,7 @@ ge25519_scalarmult_base(ge25519_p3 *h, const unsigned char *a)
     ge25519_p1p1_to_p3(h, &r);
 
     for (i = 0; i < 64; i += 2) {
-        ge25519_cmov8_base(&t, i / 2, e[i]);
+        ge25519_cmov8_base(&t, i / 2, &e[i]);
         ge25519_madd(&r, h, &t);
         ge25519_p1p1_to_p3(h, &r);
     }
@@ -2513,8 +2516,9 @@ sc25519_is_canonical(const unsigned char s[32])
 }
 
 static void
-ge25519_elligator2(unsigned char s[32], const fe25519 r, const unsigned char x_sign)
+ge25519_elligator2(unsigned char s[32], const fe25519 r, clou_secret_param(unsigned char, x_sign))
 {
+    clou_declare_local(const unsigned char, x_sign);
     fe25519      gx;
     fe25519      negx;
     fe25519      rr2;
@@ -2586,7 +2590,7 @@ ge25519_from_uniform(unsigned char s[32], const unsigned char r[32])
     x_sign = s[31] & 0x80;
     s[31] &= 0x7f;
     fe25519_frombytes(r_fe, s);
-    ge25519_elligator2(s, r_fe, x_sign);
+    ge25519_elligator2(s, r_fe, &x_sign);
 }
 
 void
@@ -2613,7 +2617,7 @@ ge25519_from_hash(unsigned char s[32], const unsigned char h[64])
         fe_f[i] += 38 * fe_g[i];
     }
     fe25519_reduce(fe_f, fe_f);
-    ge25519_elligator2(s, fe_f, x_sign);
+    ge25519_elligator2(s, fe_f, &x_sign);
 }
 
 /* Ristretto group */

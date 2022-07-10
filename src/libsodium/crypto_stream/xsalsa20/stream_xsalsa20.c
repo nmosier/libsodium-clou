@@ -21,13 +21,14 @@ crypto_stream_xsalsa20(unsigned char *c, unsigned long long clen,
 int
 crypto_stream_xsalsa20_xor_ic(unsigned char *c, const unsigned char *m,
                               unsigned long long mlen, const unsigned char *n,
-                              uint64_t ic, const unsigned char *k)
+                              clou_secret_param(uint64_t, ic), const unsigned char *k)
 {
+    clou_declare_local(uint64_t, ic);
     unsigned char subkey[32];
     int           ret;
 
     crypto_core_hsalsa20(subkey, n, k, NULL);
-    ret = crypto_stream_salsa20_xor_ic(c, m, mlen, n + 16, ic, subkey);
+    ret = crypto_stream_salsa20_xor_ic(c, m, mlen, n + 16, &ic, subkey);
     sodium_memzero(subkey, sizeof subkey);
 
     return ret;
@@ -38,7 +39,8 @@ crypto_stream_xsalsa20_xor(unsigned char *c, const unsigned char *m,
                            unsigned long long mlen, const unsigned char *n,
                            const unsigned char *k)
 {
-    return crypto_stream_xsalsa20_xor_ic(c, m, mlen, n, 0ULL, k);
+    const uint64_t u64_0 = 0LL;
+    return crypto_stream_xsalsa20_xor_ic(c, m, mlen, n, &u64_0, k);
 }
 
 size_t

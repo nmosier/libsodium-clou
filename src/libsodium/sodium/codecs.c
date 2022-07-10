@@ -168,8 +168,9 @@ sodium_base64_check_variant(const int variant)
 }
 
 size_t
-sodium_base64_encoded_len(const size_t bin_len, const int variant)
+sodium_base64_encoded_len(clou_secret_param(size_t, bin_len), const int variant)
 {
+    clou_declare_local(const size_t, bin_len);
     sodium_base64_check_variant(variant);
 
     return sodium_base64_ENCODED_LEN(bin_len, variant);

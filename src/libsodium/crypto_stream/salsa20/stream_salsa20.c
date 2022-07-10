@@ -48,16 +48,19 @@ int
 crypto_stream_salsa20(unsigned char *c, unsigned long long clen,
                       const unsigned char *n, const unsigned char *k)
 {
+    clou_public(clen);
     return implementation->stream(c, clen, n, k);
 }
 
 int
 crypto_stream_salsa20_xor_ic(unsigned char *c, const unsigned char *m,
                              unsigned long long mlen,
-                             const unsigned char *n, uint64_t ic,
+                             const unsigned char *n, clou_secret_param(uint64_t, ic),
                              const unsigned char *k)
 {
-    return implementation->stream_xor_ic(c, m, mlen, n, ic, k);
+    clou_public(mlen);
+    clou_declare_local(uint64_t, ic);
+    return implementation->stream_xor_ic(c, m, mlen, n, &ic, k);
 }
 
 int
@@ -65,6 +68,7 @@ crypto_stream_salsa20_xor(unsigned char *c, const unsigned char *m,
                           unsigned long long mlen, const unsigned char *n,
                           const unsigned char *k)
 {
+    clou_public(mlen);
     return implementation->stream_xor_ic(c, m, mlen, n, 0U, k);
 }
 

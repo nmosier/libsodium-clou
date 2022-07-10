@@ -123,9 +123,10 @@ stream_ietf_ext_ref(unsigned char *c, unsigned long long clen,
 
 static int
 stream_ref_xor_ic(unsigned char *c, const unsigned char *m,
-                  unsigned long long mlen, const unsigned char *n, uint64_t ic,
+                  unsigned long long mlen, const unsigned char *n, clou_secret_param(uint64_t, ic),
                   const unsigned char *k)
 {
+    clou_declare_local(uint64_t, ic);
     struct chacha_ctx ctx;
     uint8_t           ic_bytes[8];
     uint32_t          ic_high;
@@ -149,8 +150,9 @@ stream_ref_xor_ic(unsigned char *c, const unsigned char *m,
 static int
 stream_ietf_ext_ref_xor_ic(unsigned char *c, const unsigned char *m,
                            unsigned long long mlen, const unsigned char *n,
-                           uint32_t ic, const unsigned char *k)
+                           clou_secret_param(uint32_t, ic), const unsigned char *k)
 {
+    clou_declare_local(uint32_t, ic);
     struct chacha_ctx ctx;
     uint8_t           ic_bytes[4];
 
