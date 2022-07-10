@@ -36,13 +36,15 @@ main(void)
 
     assert(sizeof_output > 4000);
 
-    crypto_stream_salsa20_xor_ic(output, output, 4000, noncesuffix, 0U,
+    const uint64_t u64_0 = 0U;
+    const uint64_t u64_1 = 1U;
+    crypto_stream_salsa20_xor_ic(output, output, 4000, noncesuffix, &u64_0,
                                  secondkey);
     for (i = 0; i < 4000; i++) {
         assert(output[i] == 0);
     }
 
-    crypto_stream_salsa20_xor_ic(output, output, 4000, noncesuffix, 1U,
+    crypto_stream_salsa20_xor_ic(output, output, 4000, noncesuffix, &u64_1,
                                  secondkey);
     crypto_hash_sha256(h, output, sizeof_output);
     sodium_bin2hex(hex, sizeof_hex, h, sizeof h);

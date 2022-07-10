@@ -32,7 +32,7 @@ tv(const char *passwd, const char *salt, uint64_t N, uint32_t r, uint32_t p)
 
     if (crypto_pwhash_scryptsalsa208sha256_ll(
             (const uint8_t *) passwd, passwd_len, (const uint8_t *) salt,
-            salt_len, N, r, p, data, olen) != 0) {
+            salt_len, &N, &r, &p, data, olen) != 0) {
         printf("pwhash_scryptsalsa208sha256_ll([%s],[%s]) failure\n", passwd,
                salt);
         return;

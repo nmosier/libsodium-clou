@@ -38,11 +38,13 @@ main(void)
 
     assert(sizeof_output > 4000);
 
-    crypto_stream_xsalsa20_xor_ic(output, output, 4000, nonce, 0U, firstkey);
+    const uint64_t u64_0 = 0U;
+    const uint64_t u64_1 = 1U;
+    crypto_stream_xsalsa20_xor_ic(output, output, 4000, nonce, &u64_0, firstkey);
     for (i = 0; i < 4000; i++) {
         assert(output[i] == 0);
     }
-    crypto_stream_xsalsa20_xor_ic(output, output, 4000, nonce, 1U, firstkey);
+    crypto_stream_xsalsa20_xor_ic(output, output, 4000, nonce, &u64_1, firstkey);
     crypto_hash_sha256(h, output, sizeof_output);
     sodium_bin2hex(hex, sizeof_hex, h, sizeof h);
     printf("%s\n", hex);
@@ -55,16 +57,17 @@ main(void)
     }
 
     memset(output, 0, 192);
+    const uint64_t u64 = (1ULL << 32) - 1ULL;
     crypto_stream_xsalsa20_xor_ic(output, output, 192, nonce,
-                                  (1ULL << 32) - 1ULL, firstkey);
+                                  &u64, firstkey);
     sodium_bin2hex(hex, 192 * 2 + 1, output, 192);
     printf("%s\n", hex);
 
     for (i = 16; i > 0; i--) {
         memset(output, 0, 17 * 64);
+	const uint64_t ic = (1ULL << 32) - (unsigned long long) i;
         crypto_stream_xsalsa20_xor_ic(output, output, 17 * 64, nonce,
-                                      (1ULL << 32) - (unsigned long long) i,
-                                      firstkey);
+				      &ic, firstkey);
         sodium_bin2hex(hex, 2 * 17 * 64 + 1, output, 17 * 64);
         printf("%s\n", hex);
     }

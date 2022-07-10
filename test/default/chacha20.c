@@ -61,18 +61,20 @@ void tv(void)
     assert(crypto_stream_chacha20(out, 0U, nonce, key) == 0);
     assert(crypto_stream_chacha20_xor(out, out, 0U, nonce, key) == 0);
     assert(crypto_stream_chacha20_xor(out, out, 0U, nonce, key) == 0);
-    assert(crypto_stream_chacha20_xor_ic(out, out, 0U, nonce, 1U, key) == 0);
+    const uint64_t u64_1 = 1U;
+    assert(crypto_stream_chacha20_xor_ic(out, out, 0U, nonce, &u64_1, key) == 0);
 
     memset(out, 0x42, sizeof out);
     crypto_stream_chacha20_xor(out, out, sizeof out, nonce, key);
     sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
     printf("[%s]\n", out_hex);
 
-    crypto_stream_chacha20_xor_ic(out, out, sizeof out, nonce, 0U, key);
+    const uint64_t u64_0 = 0U;
+    crypto_stream_chacha20_xor_ic(out, out, sizeof out, nonce, &u64_0, key);
     sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
     printf("[%s]\n", out_hex);
 
-    crypto_stream_chacha20_xor_ic(out, out, sizeof out, nonce, 1U, key);
+    crypto_stream_chacha20_xor_ic(out, out, sizeof out, nonce, &u64_1, key);
     sodium_bin2hex(out_hex, sizeof out_hex, out, sizeof out);
     printf("[%s]\n", out_hex);
 }

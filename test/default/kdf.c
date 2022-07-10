@@ -22,7 +22,7 @@ tv_kdf(void)
     subkey = (unsigned char *) sodium_malloc(crypto_kdf_BYTES_MAX);
     for (i = 0; i < 10; i++) {
         ret = crypto_kdf_derive_from_key(subkey, crypto_kdf_BYTES_MAX,
-                                         i, context, master_key);
+                                         &i, context, master_key);
         assert(ret == 0);
         sodium_bin2hex(hex, sizeof hex, subkey, crypto_kdf_BYTES_MAX);
         printf("%s\n", hex);
@@ -32,7 +32,7 @@ tv_kdf(void)
     for (i = 0; i < crypto_kdf_BYTES_MAX + 2; i++) {
         subkey = (unsigned char *) sodium_malloc(crypto_kdf_BYTES_MAX);
         if (crypto_kdf_derive_from_key(subkey, (size_t) i,
-                                       i, context, master_key) == 0) {
+                                       &i, context, master_key) == 0) {
             sodium_bin2hex(hex, sizeof hex, subkey, (size_t) i);
             printf("%s\n", hex);
         } else {

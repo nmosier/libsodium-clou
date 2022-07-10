@@ -127,9 +127,11 @@ tv_stream_xchacha20(void)
         assert(memcmp(out, out2, out_len) == 0);
         crypto_stream_xchacha20_xor(out2, out, out_len, nonce, key);
         assert(sodium_is_zero(out2, out_len));
-        crypto_stream_xchacha20_xor_ic(out2, out, out_len, nonce, 0, key);
+	const uint64_t u64_0 = 0;
+        crypto_stream_xchacha20_xor_ic(out2, out, out_len, nonce, &u64_0, key);
         assert(sodium_is_zero(out2, out_len));
-        crypto_stream_xchacha20_xor_ic(out2, out, out_len, nonce, 1, key);
+	const uint64_t u64_1 = 1;
+        crypto_stream_xchacha20_xor_ic(out2, out, out_len, nonce, &u64_1, key);
         assert(!sodium_is_zero(out2, out_len));
         crypto_stream_xchacha20_xor(out, out, out_len, nonce, key);
         assert(sodium_is_zero(out, out_len));
@@ -139,7 +141,8 @@ tv_stream_xchacha20(void)
     out2 = (unsigned char *) sodium_malloc(0);
     crypto_stream_xchacha20(out2, 0, nonce, key);
     crypto_stream_xchacha20_xor(out2, out2, 0, nonce, key);
-    crypto_stream_xchacha20_xor_ic(out2, out2, 0, nonce, 1, key);
+    const uint64_t u64_a = 1;
+    crypto_stream_xchacha20_xor_ic(out2, out2, 0, nonce, &u64_a, key);
     sodium_free(out2);
     sodium_free(out);
 
@@ -148,7 +151,8 @@ tv_stream_xchacha20(void)
     randombytes_buf(out, 64);
     randombytes_buf(out2, 64);
     memcpy(out2 + 64, out, 64);
-    crypto_stream_xchacha20_xor_ic(out, out, 64, nonce, 1, key);
+    const uint64_t u64_z = 1;
+    crypto_stream_xchacha20_xor_ic(out, out, 64, nonce, &u64_z, key);
     crypto_stream_xchacha20_xor(out2, out2, 128, nonce, key);
     assert(memcmp(out, out2 + 64, 64) == 0);
     sodium_free(out);
@@ -158,14 +162,17 @@ tv_stream_xchacha20(void)
     out2 = (unsigned char *) sodium_malloc(192);
     memset(out, 0, 192);
     memset(out2, 0, 192);
+    const uint64_t u64_x = (1ULL << 32) - 1ULL;
+    const uint64_t u64_y = (1ULL << 32);
     crypto_stream_xchacha20_xor_ic(out2, out2, 192, nonce,
-                                   (1ULL << 32) - 1ULL, key);
+                                   &u64_x, key);
     crypto_stream_xchacha20_xor_ic(out, out, 64, nonce,
-                                   (1ULL << 32) - 1ULL, key);
+                                   &u64_x, key);
     crypto_stream_xchacha20_xor_ic(out + 64, out + 64, 64, nonce,
-                                   (1ULL << 32), key);
+                                   &u64_y, key);
+    const uint64_t u64_0 = (1ULL << 32) + 1;
     crypto_stream_xchacha20_xor_ic(out + 128, out + 128, 64, nonce,
-                                   (1ULL << 32) + 1, key);
+                                   &u64_0, key);
     assert(memcmp(out, out2, 192) == 0);
     hex = (char *) sodium_malloc(192 * 2 + 1);
     sodium_bin2hex(hex, 192 * 2 + 1, out, 192);
