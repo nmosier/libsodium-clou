@@ -69,7 +69,8 @@ crypto_stream_salsa20_xor(unsigned char *c, const unsigned char *m,
                           const unsigned char *k)
 {
     clou_public(mlen);
-    return implementation->stream_xor_ic(c, m, mlen, n, 0U, k);
+    const uint64_t u64_0 = 0U;
+    return implementation->stream_xor_ic(c, m, mlen, n, &u64_0, k);
 }
 
 void

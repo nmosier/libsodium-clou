@@ -85,7 +85,8 @@ crypto_stream_chacha20_xor(unsigned char *c, const unsigned char *m,
     if (mlen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
         sodium_misuse();
     }
-    return implementation->stream_xor_ic(c, m, mlen, n, 0U, k);
+    const uint64_t u64_0 = 0U;
+    return implementation->stream_xor_ic(c, m, mlen, n, &u64_0, k);
 }
 
 int
@@ -121,7 +122,8 @@ crypto_stream_chacha20_ietf_ext_xor(unsigned char *c, const unsigned char *m,
     if (mlen > crypto_stream_chacha20_MESSAGEBYTES_MAX) {
         sodium_misuse();
     }
-    return implementation->stream_ietf_ext_xor_ic(c, m, mlen, n, 0U, k);
+    const uint32_t u32_0 = 0U;
+    return implementation->stream_ietf_ext_xor_ic(c, m, mlen, n, &u32_0, k);
 }
 
 int
